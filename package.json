@@ -1,0 +1,20 @@
+{
+  "name": "installer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^8.2.0"
+  },
+  "dependencies": {
+    "node-fetch": "^1.7.3",
+    "prompts": "^2.4.2"
+  }
+}
