@@ -24,9 +24,8 @@ const fetch = require('node-fetch'),
 		validate: value => (value > data.length || value < 0) ? 'Invalid number' : true,
 	});
 
-	console.log(response);
 	const dest = `./${data[response.value].name}.zip`;
-	const url = `https://codeload.github.com/${data[response.value].full_name}/zip/master`;
+	const url = `https://codeload.github.com/${data[response.value].full_name}/zip/${data[response.value].default_branch}`;
 	download(url, dest, function() {
 		console.log('Done');
 	});
