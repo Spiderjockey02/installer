@@ -8,9 +8,12 @@ const fetch = require('node-fetch'),
 	let data;
 	// Get all repos from user
 	try {
-		data = await fetch(`https://api.github.com/users/${config.username}/repos`).then(res => res.json());
+		data = await fetch(`https://api.github.com/users/${config.username}/repos`)
+			.then(res => res.json())
+			// Sort it so star count high to low
+			.then(resp => resp.sort((a, b) => b.stargazers_count - a.stargazers_count));
 		console.log(`User: ${config.username} has ${data.length} repositories:`);
-		console.log(data.map(item => `${data.indexOf(item)}.) ${item.name}`).join('\n'));
+		console.log(data.map(item => `${data.indexOf(item)}.) ${item.stargazers_count} ${item.name}`).join('\n'));
 	} catch (e) {
 		console.log(e);
 	}
@@ -23,7 +26,9 @@ const fetch = require('node-fetch'),
 		message: 'What file to download',
 		validate: value => (value > data.length || value < 0) ? 'Invalid number' : true,
 	});
+	if (!response.value) return;
 
+	// Download repo as ZIP
 	const dest = `./${data[response.value].name}.zip`;
 	const url = `https://codeload.github.com/${data[response.value].full_name}/zip/${data[response.value].default_branch}`;
 	download(url, dest, function() {
