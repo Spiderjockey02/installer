@@ -10,7 +10,7 @@
 
  [![Discord](https://img.shields.io/discord/658113349384667198.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/8g6zUQu)
 [![CodeFactor](https://www.codefactor.io/repository/github/spiderjockey02/installer/badge)](https://www.codefactor.io/repository/github/spiderjockey02/installer)
-  
+
 </div>
 
 <p align="center">
@@ -33,7 +33,7 @@ A simple command line installer that allows the user to download any of the publ
 ## 📝 To-Do
 - [ ] Paginators for users with lots of repos
 - [ ] Config editor
-- [ ] Option to choose different branch (Not default)
+- [x] Option to choose different branch (Not default)
 
 
 ## 🖥️ My other projects

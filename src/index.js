@@ -20,20 +20,42 @@ const fetch = require('node-fetch'),
 	if (!data) return;
 
 	// Find what repo to download
-	const response = await prompts({
+	const { value } = await prompts({
 		type: 'number',
 		name: 'value',
 		message: 'What file to download',
-		validate: value => (value > data.length || value < 0) ? 'Invalid number' : true,
+		validate: input => (input < data.length && input >= 0) ? true : 'Invalid number',
 	});
-	if (!response.value) return;
+	if (!value && value != 0) return;
+
+	// Find what repo to download
+	let branch;
+	try {
+		branch = await fetch(`https://api.github.com/repos/${data[value].full_name}/branches`)
+			.then(res => res.json())
+			.then(resp => resp.map(item => item.name));
+	} catch (e) {
+		console.log(e);
+		branch = data[value].default_branch;
+	}
+
+	const { value: branchToDownload } = await prompts({
+		type: 'text',
+		name: 'value',
+		message: 'Download default branch (y) if not specify branch name',
+		validate: input => (input == 'y' || branch.includes(input)) ? true : 'Invalid branch',
+	});
+	if (!branchToDownload) return;
+	branch = branchToDownload == 'y' ? data[value].default_branch : branchToDownload;
 
 	// Download repo as ZIP
-	const dest = `./${data[response.value].name}.zip`;
-	const url = `https://codeload.github.com/${data[response.value].full_name}/zip/${data[response.value].default_branch}`;
+	const dest = `./${data[value].name}.zip`;
+	const url = `https://codeload.github.com/${data[value].full_name}/zip/${branch}`;
 	download(url, dest, function() {
 		console.log('Done');
 	});
+
+	// Once file is downloaded find and start editing config file
 })();
 
 // Download repo's file
